@@ -5,7 +5,7 @@ const PlaygroundDirectory = () => {
     const queryParameters = new URLSearchParams(window.location.search);
     const componentToRender = queryParameters.get("component");
     // TODO - pull this out to a method
-    const LoadedComponent = componentToRender?.length > 1 && lazy(() => import(`../${componentToRender.charAt(0).toUpperCase() + componentToRender.substr(1).toLowerCase()}`));
+    const LoadedComponent = componentToRender && componentToRender?.length > 1 && lazy(() => import(`../${componentToRender.charAt(0).toUpperCase() + componentToRender.slice(1).toLowerCase()}`));
 
     return (
         <>
