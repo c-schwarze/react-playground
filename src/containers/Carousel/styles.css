@@ -1,4 +1,20 @@
+div.carousel {
+    display: inline-flex;
+    align-items: center;
+    min-width: 500px;
+}
+
 img.carousel-img {
-    max-width: 400px;
-    max-height: 300px;
+    width: 400px;
+    height: 300px;
+}
+
+div.carousel-btn-div {
+    width: 50px;
+    margin: auto;
+}
+
+button.carousel-btn {
+    margin: auto;
+    display: block;
 }
