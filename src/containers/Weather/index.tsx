@@ -89,6 +89,7 @@ const Weather = () => {
                 </div>
             </div>
         )}
+        <p>Using <a href="https://openweathermap.org/">OpenWeather</a> for data.</p>
       </div>  
     );
 }
