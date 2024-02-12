@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { mod, abs } from 'mathjs';
+import { mod } from 'mathjs';
 
 import { imgs } from './constants';
 import { CarouselProps } from './interfaces';

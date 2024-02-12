@@ -1,0 +1,39 @@
+/**
+    City Results Section
+*/
+div.city-search-results {
+    /* border */
+    border-width: 1px 1px 0px 1px;
+    border-color: black;
+    border-style: solid;
+}
+
+div.city-search-results > div {
+    /* margin: 0px; */
+    border-bottom: 1px black solid;
+}
+
+div.city-search-results > div > button {
+    margin: 0px;
+    padding: 5px 5px 5px 10px;
+    font-size: 16px;
+    background-color: white;
+    width: 100%;
+    text-align: left;
+}
+
+div.city-search-results > div > button:hover {
+    background-color: lightgray;
+    cursor: pointer;
+}
+
+/**
+    Weather Results Section
+*/
+div.weather-results {
+    border: 1px black solid;
+}
+
+p.weather-result-item {
+    margin: 0px;
+}
