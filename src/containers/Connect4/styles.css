@@ -1,0 +1,16 @@
+div.col {
+    display: flex;
+}
+
+button.box {
+    width: 25px;
+    height: 25px;
+}
+
+button.player1 {
+    background-color: red;
+}
+
+button.player2 {
+    background-color: #4578ff;
+}
