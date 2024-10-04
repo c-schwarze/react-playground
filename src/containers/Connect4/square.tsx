@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-const Square = ({square, squareIndex, colIndex, placePiece}) => {
+const Square = ({square, squareIndex, rowIndex, placePiece, disabled}) => {
     const displayValue = () => {
         let displayValue = ""
         if (square === "1") {
@@ -26,11 +26,11 @@ const Square = ({square, squareIndex, colIndex, placePiece}) => {
         <button 
             className={`box ${getClassName()}`}
             key={squareIndex}
-            disabled={square !== 'empty'}
+            disabled={square !== 'empty' || disabled}
             onClick={placePiece}
         >
             {/* {displayValue()} */}
-            {colIndex} {squareIndex}
+            {rowIndex} {squareIndex}
         </button>
     )
 }

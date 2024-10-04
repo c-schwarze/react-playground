@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Connect4Settings } from './interfaces';
 import Square from './square';
@@ -11,9 +11,164 @@ const NUM_FOR_WIN = 4;
 
 const Connect4 = () => {
     const [playerTurn, setPlayerTurn] = useState<number>(1);
-    const [lastPlay, setLastPlay] = useState<number[]>([]);
+    const [lastPlay, setLastPlay] = useState<number[]>([-1, -1]);
     const [board, setBoard] = useState<string[][]>([[]]);
     const [winner, setWinner] = useState<number>(0);
+
+    useEffect(() => {
+        const [x, y] = lastPlay;
+
+        // break if not set yet
+        if (x < 0 || y < 0) {
+            return
+        }
+        const playerToCheck = board[x][y]
+
+        // VERTICAL we only check down
+        if (checkVertical(playerToCheck, x, y)) {
+            setWinner(Number(playerToCheck))
+            return
+        }
+        // HORIZONTAL we check left and right
+        if (checkHorizontal(playerToCheck, x, y)) {
+            setWinner(Number(playerToCheck))
+            return
+        }
+        // DIAGONAL we check going up to the left
+        if (checkDiagonalLeft(playerToCheck, x, y)) {
+            setWinner(Number(playerToCheck))
+            return
+        }
+        // DIAGONAL we check going up to the right
+        if (checkDiagonalRight(playerToCheck, x, y)) {
+            setWinner(Number(playerToCheck))
+            return
+        }
+
+        setWinner(0)
+    }, lastPlay)
+
+    const checkVertical = (playerToCheck: string, x: number, y: number) => {
+        for (let i = 1; i < NUM_FOR_WIN; i++) {
+            // break  out if we went too far
+            if (x+i >= HEIGHT) {
+                return false;
+            }
+            if (board[x+i][y] !== playerToCheck) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    const checkHorizontal = (playerToCheck: string, x: number, y: number) => {
+        let numInRow = 1
+        
+        // Go left
+        for (let i = 1; i < NUM_FOR_WIN; i++) {
+            // break  out if we went too far
+            if (y-i < 0) {
+                break
+            }
+            if (board[x][y-i] === playerToCheck) {
+                numInRow++
+            } else {
+                break
+            }
+        }
+
+        // Go right
+        for (let i = 1; i < NUM_FOR_WIN; i++) {
+            // break  out if we went too far
+            if (y+i >= WIDTH) {
+                break
+            }
+            if (board[x][y+i] === playerToCheck) {
+                numInRow++
+            } else {
+                break
+            }
+        }
+
+        if (numInRow >= NUM_FOR_WIN) {
+            return true
+        }
+        
+        return false;
+    }
+
+    const checkDiagonalLeft = (playerToCheck: string, x: number, y: number) => {
+        let numInRow = 1
+        
+        // Go up and left
+        for (let i = 1; i < NUM_FOR_WIN; i++) {
+            // break  out if we went too far
+            if (x-i < 0 || y-i < 0) {
+                break
+            }
+            if (board[x-i][y-i] === playerToCheck) {
+                numInRow++
+            } else {
+                break
+            }
+        }
+
+        // Go down and right
+        for (let i = 1; i < NUM_FOR_WIN; i++) {
+            // break  out if we went too far
+            if (x+i >= HEIGHT || y+i >= WIDTH) {
+                break
+            }
+            if (board[x+i][y+i] === playerToCheck) {
+                numInRow++
+            } else {
+                break
+            }
+        }
+
+        if (numInRow >= NUM_FOR_WIN) {
+            return true
+        }
+        
+        return false;
+    }
+
+    const checkDiagonalRight = (playerToCheck: string, x: number, y: number) => {
+        let numInRow = 1
+        
+        // Go up and right
+        for (let i = 1; i < NUM_FOR_WIN; i++) {
+            // break  out if we went too far
+            if (x-i < 0 || y+i >= WIDTH) {
+                break
+            }
+            if (board[x-i][y+i] === playerToCheck) {
+                numInRow++
+            } else {
+                break
+            }
+        }
+
+        // Go down and left
+        for (let i = 1; i < NUM_FOR_WIN; i++) {
+            // break  out if we went too far
+            if (x+i >= HEIGHT || y-i < 0) {
+                break
+            }
+            if (board[x+i][y-i] === playerToCheck) {
+                numInRow++
+            } else {
+                break
+            }
+        }
+
+        if (numInRow >= NUM_FOR_WIN) {
+            return true
+        }
+        
+        return false;
+    }
 
     const createNewBoard = (width: number, height: number) => {
         // TODO - make the board creation more efficient
@@ -25,14 +180,21 @@ const Connect4 = () => {
             }
         }
         setBoard(newBoard)
-        setLastPlay([])
+        setLastPlay([-1, -1])
         setPlayerTurn(1)
+        setWinner(0)
     }
 
     const placePiece = (x: number, y: number) => {
-        board[x][y] = playerTurn.toString()
-        setLastPlay([x,y])
-        checkWin();
+        // find the highest X value
+        for (let i = HEIGHT - 1; i >= 0; i-- ) {
+            console.log("i", i)
+            if ( board[i][y] === "empty") {
+                board[i][y] = playerTurn.toString()
+                setLastPlay([i,y])
+                break
+            }
+        }
 
         if (playerTurn === 1) {
             setPlayerTurn(2)
@@ -41,37 +203,12 @@ const Connect4 = () => {
         }
     }
 
-    // Only check last win from the last play
-    const checkWin = () => {
-        const [x, y] = lastPlay;
-        let inARow = 1;
-        // vertical we only check down
-        for (let i = 1; i <= 3; i++) {
-            if (y-i > 0) {
-                break
-            }
-            console.log(i)
-            if (board[x][y-i] === playerTurn.toString()) {
-                inARow++;
-            }
-        }
-        if (inARow === 4) {
-            setWinner(playerTurn)
-        }
-        // horizontal we check left and right
-        // diagonal we check going up to the left
-        // diagonal we check going up to the right
-        
-
-        return ""
-    }
-
     return (
         <>
             <p>Current Turn: {playerTurn === 1 ? "Player 1" : "Player 2"}</p>
             {
                 winner !== 0 && (
-                    <p>{winner}</p>
+                    <p>Player {winner} Wins!</p>
                 )
             }
             <button onClick={() => createNewBoard(WIDTH, HEIGHT)}>
@@ -81,15 +218,16 @@ const Connect4 = () => {
             {/* Display board */}
             <div className="board">
                 {
-                    board.map((col, colIndex) => (
-                        <div className="col" key={colIndex}>
+                    board.map((row, rowIndex) => (
+                        <div className="row" key={rowIndex}>
                             {
-                                col.map((square, squareIndex) => (
+                                row.map((square, squareIndex) => (
                                     <Square
                                         square={square}
                                         squareIndex={squareIndex}
-                                        colIndex={colIndex}
-                                        placePiece={() => placePiece(colIndex, squareIndex)}
+                                        rowIndex={rowIndex}
+                                        placePiece={() => placePiece(rowIndex, squareIndex)}
+                                        disabled={winner !== 0}
                                     />
                                 ))
                             }
