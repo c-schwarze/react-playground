@@ -14,8 +14,9 @@ const PlaygroundDirectory = () => {
             <h1>React Playground</h1>
             <ul>
                 <li><a href='.?component=carousel'>Carousel</a></li>
+                <li><a href='.?component=connect4'>Connect 4</a></li>
+                <li><a href='.?component=sudoku'>Sudoku</a></li>
                 <li><a href='.?component=weather'>Weather</a></li>
-                <li><a href='.?component=connect4'>Connect4</a></li>
             </ul>
 
             <Suspense fallback="LOADING!"> 
