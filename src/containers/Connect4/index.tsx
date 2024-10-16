@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 
-import { Connect4Settings } from './interfaces';
 import Square from './square';
 import './styles.css';
 
 
+// Move to ./interfaces.tsx as "Settings", so we can adjust them as params
 const WIDTH = 7;
 const HEIGHT = 6;
 const NUM_FOR_WIN = 4;
+//
 
 const Connect4 = () => {
     const [playerTurn, setPlayerTurn] = useState<number>(1);
@@ -191,6 +192,7 @@ const Connect4 = () => {
             console.log("i", i)
             if ( board[i][y] === "empty") {
                 board[i][y] = playerTurn.toString()
+                // TODO - we could just call checkWinner here. No need to store the lastPlay.
                 setLastPlay([i,y])
                 break
             }
@@ -205,10 +207,11 @@ const Connect4 = () => {
 
     return (
         <>
-            <p>Current Turn: {playerTurn === 1 ? "Player 1" : "Player 2"}</p>
             {
-                winner !== 0 && (
-                    <p>Player {winner} Wins!</p>
+                winner !== 0 ? (
+                    <p>{winner === 1 ? "Red" : "Yellow"} Wins!</p>
+                ) : (
+                    <p>Current Turn: {playerTurn === 1 ? "Red" : "Yellow"}</p>
                 )
             }
             <button onClick={() => createNewBoard(WIDTH, HEIGHT)}>
@@ -218,7 +221,7 @@ const Connect4 = () => {
             {/* Display board */}
             <div className="board">
                 {
-                    board.map((row, rowIndex) => (
+                    board.reverse().map((row, rowIndex) => (
                         <div className="row" key={rowIndex}>
                             {
                                 row.map((square, squareIndex) => (
@@ -228,6 +231,7 @@ const Connect4 = () => {
                                         rowIndex={rowIndex}
                                         placePiece={() => placePiece(rowIndex, squareIndex)}
                                         disabled={winner !== 0}
+                                        debugMode={true}
                                     />
                                 ))
                             }

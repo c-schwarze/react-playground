@@ -1,10 +1,18 @@
+div.board {
+    margin: 10px;
+}
+
 div.row {
-    display: flex;
+    display: inline-block;
+    background-color: blue;
 }
 
 button.box {
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border:none;
+    margin: 5px;
 }
 
 button.player1 {
@@ -12,5 +20,5 @@ button.player1 {
 }
 
 button.player2 {
-    background-color: #4578ff;
+    background-color: yellow;
 }

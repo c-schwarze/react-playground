@@ -1,15 +1,9 @@
 import React from 'react';
 
 
-const Square = ({square, squareIndex, rowIndex, placePiece, disabled}) => {
+const Square = ({square, squareIndex, rowIndex, placePiece, disabled, debugMode}) => {
     const displayValue = () => {
-        let displayValue = ""
-        if (square === "1") {
-            displayValue = 'O'
-        } else if (square === "2") {
-            displayValue = 'O'
-        }
-        return displayValue;
+        return `${rowIndex} ${squareIndex}`;
     }
 
     const getClassName = () => {
@@ -29,8 +23,7 @@ const Square = ({square, squareIndex, rowIndex, placePiece, disabled}) => {
             disabled={square !== 'empty' || disabled}
             onClick={placePiece}
         >
-            {/* {displayValue()} */}
-            {rowIndex} {squareIndex}
+            {debugMode && displayValue()}
         </button>
     )
 }
