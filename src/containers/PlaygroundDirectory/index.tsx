@@ -15,6 +15,8 @@ const PlaygroundDirectory = () => {
             <ul>
                 <li><a href='.?component=carousel'>Carousel</a></li>
                 <li><a href='.?component=connect4'>Connect 4</a></li>
+                <li><a href='.?component=cursortesting'>Cursor In Display</a></li>
+                <li><a href='.?component=game2048'>2048</a></li>
                 <li><a href='.?component=sudoku'>Sudoku</a></li>
                 <li><a href='.?component=weather'>Weather</a></li>
             </ul>

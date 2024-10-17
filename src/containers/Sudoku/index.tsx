@@ -9,6 +9,7 @@ const WIDTH = 9;
 // TODO - create a typing way for the user to enter numbers
 // TODO - useEffect to check if there are duplicates. If so, highlight the duplicates
 // TODO - optimize the solver to do it in 1 pass instead of 3
+// TODO - create a way to pull a new problem
 // TODO - create a auto solver
 // TODO - pull out parts to other components. Its not really necessary, as they aren't reusable
 const Sudoku = () => {
