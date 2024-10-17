@@ -11,7 +11,7 @@ interface CellProps {
 const Cell = (props: CellProps) => {
     const {x, y, setSpecificCell, classes} = props;
     return (
-        <div 
+        <div
             className={classes}
             onMouseEnter={() => setSpecificCell(x, y, true)}
         ></div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Cell from './cell'
 import { CursorTestingOption } from './interfaces'
@@ -10,47 +10,69 @@ const WIDTH = 10;
 const HEIGHT = 10;
 
 
-// TODO - smooth out the highlight box
 // TODO - need the drag box to determine what is highlighted
+// TODO - need to update to now have the parent hold all of the cells properly
 const Cursortesting = () => {
     // General
     const [option, setOption] = useState<CursorTestingOption>(CursorTestingOption.HighlightOnHover);
-    const [board, setBoard] = useState<boolean[][]>(create2DArray(WIDTH, HEIGHT, false))
+    const [board, setBoard] = useState<boolean[][]>(create2DArray(WIDTH, HEIGHT))
 
     // For Drag
     const [clickedPoint, setClickedPoint] = useState<number[]>([-1,-1]);
     const [dragPoint, setDragPoint] = useState<number[]>([-1,-1]);
+    const [dragCanMove, setDragCanMove] = useState<boolean>(false);
+
+    // Drag useEffect to highlight
+    useEffect(() => {
+        if (option === CursorTestingOption.HighlightOnDrag) {
+            board.forEach((row, x) => {
+                row.forEach((cell, y) => {
+                    // TODO - we don't have coordinates here. If each "cell" is the actual component,
+                    // TODO - we need to keep track of each component to be able to get the details
+                    // TODO - then do the logic to check if its inside - which will update the color
+                    
+                    // TODO - call setSpecificCell()
+                    // setSpecificCell(x, y, true)
+                })
+            })
+        }
+    }, [clickedPoint, dragPoint])
 
     // Reset
     const resetCells = () => {
-        setBoard(create2DArray(WIDTH, HEIGHT, false))
+        setBoard(create2DArray(WIDTH, HEIGHT))
         setClickedPoint([-1, -1])
         setDragPoint([-1, -1])
+        setDragCanMove(false)
     }
 
     // Options
     const handleOptionChange = (e) => {
         setOption(e.target.value)
+        resetCells();
     }
 
     // COLOR CELL
     const setSpecificCell = (x: number, y: number, newValue: boolean) => {
-        if (option === CursorTestingOption.HighlightOnHover) {
-            board[x][y] = newValue;
-        }
+        board[x][y] = newValue;
         setBoard([...board]);
     }
 
     // DRAG
     const handleDragOptionClick = (e: React.MouseEvent) => {
         setClickedPoint([e.clientX, e.clientY])
+        setDragPoint([e.clientX, e.clientY])
+        setDragCanMove(true)
     }
     const handleDragOptionDrag = (e: React.MouseEvent) => {
-        setDragPoint([e.clientX, e.clientY])
+        if (dragCanMove) {
+            setDragPoint([e.clientX, e.clientY])
+        }
     }
 
     return (
         <>
+            {/* Options */}
             <div>
                 <select onChange={handleOptionChange}>
                     {Object.keys(CursorTestingOption).map((key) => (
@@ -60,10 +82,9 @@ const Cursortesting = () => {
                     ))}
                 </select>
                 <button onClick={() => resetCells()}>Reset Grid</button>
-                <p>Clicked point: {clickedPoint[0]} {clickedPoint[1]}</p>
-                <p>Drag point: {dragPoint[0]} {dragPoint[1]}</p>
             </div>
             
+            {/* Drag option box */}
             {
                 option === CursorTestingOption.HighlightOnDrag && clickedPoint[0] !== -1 && clickedPoint[1] !== -1 && (
                     <div
@@ -79,10 +100,12 @@ const Cursortesting = () => {
                     </div>
                 )
             }
+
+            {/* Cell grid */}
             <div 
                 className="box"
                 onMouseDown={(e) => option === CursorTestingOption.HighlightOnDrag && handleDragOptionClick(e)}
-                // onMouseUp={(e) => option === CursorTestingOption.HighlightOnDrag && setClickedPoint([-1, -1])}
+                onMouseUp={() => setDragCanMove(false)}
                 onMouseMove={(e) => option === CursorTestingOption.HighlightOnDrag && handleDragOptionDrag(e)}
             >
                 <>

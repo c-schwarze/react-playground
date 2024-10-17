@@ -22,4 +22,5 @@ div.drag-box {
     border: 1px dashed black;
     background-color: lightblue;
     opacity: .3;
+    pointer-events:none;
 }
