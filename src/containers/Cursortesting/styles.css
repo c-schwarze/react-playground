@@ -1,6 +1,8 @@
-/* div.container {
+div.box {
+    border: 1px solid black;
     display: inline-block;
-} */
+    position: relative
+}
 
 div.cell {
     width: 40px;
@@ -12,4 +14,12 @@ div.cell {
 
 div.cell.highlight {
     background-color: lightblue;
+}
+
+div.drag-box {
+    position: fixed;
+    z-index: 9999;
+    border: 1px dashed black;
+    background-color: lightblue;
+    opacity: .3;
 }
