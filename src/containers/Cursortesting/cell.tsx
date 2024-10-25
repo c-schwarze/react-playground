@@ -14,6 +14,8 @@ const Cell = (props: CellProps) => {
         <div
             className={classes}
             onMouseEnter={() => setSpecificCell(x, y, true)}
+            data-x={x}
+            data-y={y}
         ></div>
     )
 }
